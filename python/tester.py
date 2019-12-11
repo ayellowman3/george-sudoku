@@ -1,17 +1,35 @@
 from Tile import *
+from Board import *
 
 def sudoku_solver(start, finished):
     print(start)
     zeros = []
     filled = []
+    quads = [[],[],[],[],[],[],[],[],[],[]]
+    rows = [[],[],[],[],[],[],[],[],[],[]]
+    columns = [[],[],[],[],[],[],[],[],[],[]]
+
     for x in range(81):
         #print(x)
+        row = Tile.getRow(x)
+        column = Tile.getColumn(x)
+        quad = Tile.getQuad(row, column)
         if(start[x]=='0'):
-            zeros.append(Tile(start[x],[1,2,3,4,5,6,7,8,9],x))
+            zeros.append(Tile(start[x],[1,2,3,4,5,6,7,8,9],row,column,quad))
+        else:
+            filled.append(Tile(start[x],[],row,column,quad))
+    Board.popBucket(quads, rows, columns, zeros)
+    Board.updatePossible(quads, rows, columns, zeros, filled)
+    for x in rows[2]:
+        print(x.possible)
+
+    print(len(quads))
+    Board.printBoard(start)
     #square = Tile(start,[1])
-    print len(zeros)
-    for x in zeros:
-        print(str(x.value) + " " + str(x.row) + " " + str(x.column) + " " + str(x.quad))
+    print(len(zeros))
+    print(len(filled))
+    #for x in zeros:
+    #    print(str(x.value) + " " + str(x.row) + " " + str(x.column) + " " + str(x.quad))
 
 
 
