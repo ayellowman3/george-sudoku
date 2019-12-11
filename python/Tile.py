@@ -25,3 +25,14 @@ class Tile:
         x = math.floor((column-1)/3 + 1)
         x += (math.floor((row-1)/3) * 3)
         return x
+
+    def setValue(value):
+        value = value
+
+    def rmPossible(num):
+        for i in possible:
+            if(i == num):
+                possible.remove(num)
+
+    def clearPossible():
+        possible = []
