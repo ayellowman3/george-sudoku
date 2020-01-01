@@ -22,9 +22,10 @@ def update_possible(zeros, pRow, pCol, pQuad):
 
 def sudoku_solver(input):
     problem_set = input.split(",")
+    #print(input)
+    #print(problem_set)
     problem = problem_set[0]
     solution = problem_set[1]
-
     zeros = []
     filled = []
     pRow = []
@@ -68,8 +69,8 @@ def sudoku_solver(input):
                 filled.append(z)
                 zeros.remove(z)
         if(zLen == len(zeros)):
-            dBoard(filled, zeros)
-            print(solution)
+            #dBoard(filled, zeros)
+            #print(solution)
             return False
         update_possible(zeros, pRow, pCol, pQuad)
     #dBoard(filled, zeros)
@@ -88,7 +89,8 @@ def main():
     #print(problem_set)
     #print(sudoku_solver(problem))
 
-    files = ['sudoku1.csv','sudoku2.csv','sudoku3.csv','sudoku4.csv','sudoku5.csv',]
+    #files = ['sudoku1.csv','sudoku2.csv','sudoku3.csv','sudoku4.csv','sudoku5.csv',]
+    files = ['sudoku1.csv']
     line_count = 0
     correct = 0
     incorrect = []
@@ -96,13 +98,21 @@ def main():
         with open(i) as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
+                #print(','.join(row))
+                #break;
                 if(sudoku_solver(','.join(row))):
                     correct += 1
                 else:
                     incorrect.append(row)
                 line_count += 1
-            #print(line_count)
+                #print(line_count)
             print(str(correct)+' out of '+str(line_count)+' correct')
+    with open('incorrect.csv', 'wb') as csvfile:
+        for i in incorrect:
+            filewriter.writerow(i)
+
+    for i in incorrect:
+        print(i)
 
 
 main()
