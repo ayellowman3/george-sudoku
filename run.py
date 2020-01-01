@@ -1,6 +1,8 @@
 from math import floor
 from Tile import Tile
 import csv
+import pandas as pd
+import time
 
 
 def dBoard(filled, zeros):
@@ -83,36 +85,37 @@ def sudoku_solver(input):
     #solve(puzzle)
 
 def main():
-    #problem = "004300209005009001070060043006002087190007400050083000600000105003508690042910300,864371259325849761971265843436192587198657432257483916689734125713528694542916378"
 
+    #up to 45 files
+    numFiles = 45
+    files = []
+    for i in range(1,numFiles+1):
+        files.append('sudoku' + str(i) + '.csv')
+    #files = ['sample.csv']
 
-    #print(problem_set)
-    #print(sudoku_solver(problem))
-
-    #files = ['sudoku1.csv','sudoku2.csv','sudoku3.csv','sudoku4.csv','sudoku5.csv',]
-    files = ['sudoku1.csv']
     line_count = 0
     correct = 0
-    incorrect = []
+    incorrect_count = 0
+    result = []
     for i in files:
-        with open(i) as csv_file:
+        start_time = time.time()
+        incorrect = []
+        with open('sudoku/'+i) as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
-                #print(','.join(row))
-                #break;
-                if(sudoku_solver(','.join(row))):
-                    correct += 1
-                else:
-                    incorrect.append(row)
-                line_count += 1
-                #print(line_count)
-            print(str(correct)+' out of '+str(line_count)+' correct')
-    with open('incorrect.csv', 'wb') as csvfile:
-        for i in incorrect:
-            filewriter.writerow(i)
-
-    for i in incorrect:
-        print(i)
+                problem = ','.join(row)
+                if(sudoku_solver(problem)==False):
+                    incorrect.append(problem)
+        line_count += 200000
+        incorrect_count += len(incorrect)
+        correct = line_count-incorrect_count
+        print(str(correct)+' out of '+str(line_count)+' correct')
+        result.append(str(200000-len(incorrect))+' out of 200,000 correct')
+        print("--- %s seconds ---" % (time.time() - start_time))
+        df = pd.DataFrame(incorrect, columns=["dataset"])
+        df.to_csv('incorrect/'+i, index=False, header=False)
+    df = pd.DataFrame(list(zip(files, result)), columns=["files","results"])
+    df.to_csv('result.csv', index=False, header=False)
 
 
 main()
