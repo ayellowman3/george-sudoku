@@ -110,12 +110,12 @@ def main():
         incorrect_count += len(incorrect)
         correct = line_count-incorrect_count
         print(str(correct)+' out of '+str(line_count)+' correct')
-        result.append(str(200000-len(incorrect))+' out of 200,000 correct')
+        result.append(str(200000-len(incorrect)))
         print("--- %s seconds ---" % (time.time() - start_time))
         df = pd.DataFrame(incorrect, columns=["dataset"])
         df.to_csv('incorrect/'+i, index=False, header=False)
     df = pd.DataFrame(list(zip(files, result)), columns=["files","results"])
-    df.to_csv('result.csv', index=False, header=False)
+    df.to_csv('sudoku_result.csv', index=False, header=False)
 
 
 main()
